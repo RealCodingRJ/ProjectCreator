@@ -11,54 +11,62 @@ namespace ProjectCreator
             for (int i = 0; i < 1; i++)
             {
 
-                Console.WriteLine("Enter Type:  ");
-                Console.WriteLine("React | Next | Spring");
-
-                var Project = Console.ReadLine();
-                if (Project == null) return;
-
-
-                if (Project.Equals("React"))
+                try
                 {
-                    Task task = new(() =>
+                    Console.WriteLine("Enter Type:  ");
+                    Console.WriteLine("React | Next | Spring");
+
+                    var Project = Console.ReadLine();
+                    if (Project == null) return;
+
+
+                    if (Project.Equals("React"))
+                    {
+                        Task task = new(() =>
+                        {
+
+                            Thread.Sleep(1000);
+                            Process.Start("cmd.exe", "npx nano-react-app myapp");
+
+                        });
+
+                        task.Start();
+                        await DB.DB.GetDB("npx nano-react-app myapp");
+                    }
+
+                    else if (Project.Equals("Next"))
                     {
 
-                        Thread.Sleep(1000);
-                        Process.Start("cmd.exe", "npx nano-react-app myapp");
+                        Task task = new(() =>
+                        {
+                            Thread.Sleep(1000);
+                            Process.Start("cmd.exe", "npx npx create-next-app myapp");
+                        });
 
-                    });
+                        task.Start();
+                        await DB.DB.GetDB("npx npx create-next-app myapp");
+                    }
 
-                    task.Start();
-                    await DB.DB.GetDB("npx nano-react-app myapp");
-                }
-
-                else if (Project.Equals("Next"))
-                {
-
-                    Task task = new(() =>
+                    else if (Project.Equals("Spring"))
                     {
-                        Thread.Sleep(1000);
-                        Process.Start("cmd.exe", "npx npx create-next-app myapp");
-                    });
+                        Task task = new(() =>
+                        {
 
-                    task.Start();
-                    await DB.DB.GetDB("npx npx create-next-app myapp");
-                }
+                            Thread.Sleep(1000);
+                            Process.Start("cmd.exe", "spring init --dependencies=web,data-jpa myproject");
+                        });
 
-                else if (Project.Equals("Spring"))
+                        await DB.DB.GetDB("spring init --dependencies=web,data-jpa myproject");
+
+                        task.Start();
+
+
+                    }
+                } 
+                
+                catch(Exception ce)
                 {
-                    Task task = new(() =>
-                    {
-
-                        Thread.Sleep(1000);
-                        Process.Start("cmd.exe", "spring init --dependencies=web,data-jpa myproject");
-                    });
-
-                    await DB.DB.GetDB("spring init --dependencies=web,data-jpa myproject");
-
-                    task.Start();
-
-
+                    Console.WriteLine(ce.Message);
                 }
 
 
